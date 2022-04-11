@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'UlLocalizationController@index')->name('index');
+Route::get('/buscar/{termo?}/', 'UlLocalizationController@buscar')->name('buscar');
+Route::post('/salvar', 'UlLocalizationController@salvar')->name('salvar');
+Route::post('/upload', 'UlLocalizationController@upload')->name('upload_localization');
+Route::get('/exportcsv', 'UlLocalizationController@exportCsv')->name('exportCsv');
