@@ -22,6 +22,11 @@ class UlLocalizationController extends Controller
         return view('localization.index', compact('localizations', 'faltam', 'traduzidos', 'termo'));
     }
 
+    public function enviar()
+    {
+        return view('localization.upload');
+    }
+
     public function buscar(Request $request)
     {
         $termo = $request->termo;
@@ -55,6 +60,8 @@ class UlLocalizationController extends Controller
     {
         $localization = UlLocalization::where('key', $request->key)->FirstOrFail();
         $localization->brazilian = $request->brazilian == " " ? "" : $request->brazilian;
+        $localization->old_brazilian = null;
+        $localization->old_english = null;
         $localization->save();
         return json_encode($localization);
     }
@@ -70,8 +77,12 @@ class UlLocalizationController extends Controller
         $file = fopen($file, "r");
         $csvLine = fgetcsv($file, 1000, ",");
         $chave = strtoupper($csvLine[1]);
-        if(strtoupper($csvLine[0])=='KEY') {
+        $key = strtoupper($csvLine[0]);
+        echo $key.", ". $chave."<br>";
+        if($key==strtoupper($csvLine[0])) {
+            echo "-----------------<br>";
             while ($csvLine = fgetcsv($file, 1000, ",")) {
+                echo $csvLine[0]."<br>";
                 if(strlen($csvLine[0]) > 0) {
                     $localization = UlLocalization::where('key', $csvLine[0])->first();
                     if (!$localization) {
@@ -80,11 +91,14 @@ class UlLocalizationController extends Controller
                     } else {
                         if($chave=="ENGLISH" && $request->tipo=="en" && $localization->english!=$csvLine[1]){
                             $localization->old_english = $localization->english;
+                            $localization->old_brazilian = $localization->brazilian;
+                            $localization->brazilian = null;
                         }elseif($chave=="BRAZILIAN" && $request->tipo=="ptbr" && $localization->brazilian!=$csvLine[1]){
                             $localization->old_brazilian = $localization->brazilian;
                         }
                     }
                     if($chave=="ENGLISH" && $request->tipo=="en"){
+                        echo "en: ".$csvLine[0].",".$csvLine[1]."<br>";
                         $localization->english = $csvLine[1];
                     }elseif($chave=="BRAZILIAN" && $request->tipo=="ptbr"){
                         $localization->brazilian = $csvLine[1]=="" ? null : $csvLine[1];
@@ -93,8 +107,9 @@ class UlLocalizationController extends Controller
                 }
             }
         }
+        echo "fim";
         fclose($file); //Close after reading
-        return redirect()->back();
+        //return redirect()->back();
     }
 
 

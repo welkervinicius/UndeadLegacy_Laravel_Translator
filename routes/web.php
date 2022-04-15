@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'UlLocalizationController@index')->name('index');
+Route::get('/enviar', 'UlLocalizationController@enviar')->name('enviar');
 Route::get('/buscar/{termo?}/', 'UlLocalizationController@buscar')->name('buscar');
 Route::post('/salvar', 'UlLocalizationController@salvar')->name('salvar');
 Route::post('/upload', 'UlLocalizationController@upload')->name('upload_localization');

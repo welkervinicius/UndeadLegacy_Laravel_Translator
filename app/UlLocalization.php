@@ -12,5 +12,5 @@ class UlLocalization extends Model
     protected $fillable = [
         'key', 'english', 'brazilian', 'old_english', 'old_brazilian', 'verificado'
     ];
-    
+
 }
