@@ -89,14 +89,6 @@
                     <div class="row justify-content-md-center m-b-md">
                         <div class="col-md-auto bg-info p-3 m-3 rounded-3">
                             <div class="links">
-                                <form action="{{ route('upload_localization') }}" enctype="multipart/form-data" method="post">
-                                    @csrf
-                                    <input type="file" name="file" type="Localization.txt" required> - <select name="tipo" required><option value="">--selecione--</option><option value="en">Ingles</option><option value="ptbr">Portugues</option></select> - <button type="submit" class="btn btn-sm btn-default">Enviar</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-auto bg-info p-3 m-3 rounded-3">
-                            <div class="links">
                                 <form action="{{ route('buscar') }}" method="get">
                                     Buscar por: <input type="text" name="termo"> <button type="submit" class="btn btn-sm btn-default">Enviar</button>
                                 </form>
